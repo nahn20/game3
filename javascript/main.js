@@ -10,6 +10,7 @@ var createScene = function () {
     var camera = new BABYLON.ArcRotateCamera("Camera", (3/4)*Math.PI, (1/2 + 0.05)*Math.PI, 2, new BABYLON.Vector3(-10, 0, 10), scene);
     camera.attachControl(canvas, true);
 
+
     // Add lights to the scene
     var light1 = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 1, 0), scene);
     var light2 = new BABYLON.PointLight("light2", new BABYLON.Vector3(0, 1, -1), scene);
@@ -22,12 +23,18 @@ var createScene = function () {
     ground.position = new BABYLON.Vector3(0, -2, 0);
 
 
+    // var pointArray = [];
+    // var sphereArray = [];
+    // for(i = 0; i < 100; i++){
+    //     sphereArray[i] = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter:1}, scene);
+    //     sphereArray[i].position = new BABYLON.Vector3(3*(Math.random()-0.5)*i, (Math.random()-0.5)*i, 3*(Math.random()-0.5)*i);
+    //     pointArray[i] = new BABYLON.Vector3(sphereArray[i].position.x, sphereArray[i].position.y, sphereArray[i].position.z);
+    // }
+    // var sphereConnectingLines = BABYLON.MeshBuilder.CreateLines("sphereConnectingLines", {points: pointArray}, scene);
+
     var pointArray = [];
-    var sphereArray = [];
     for(i = 0; i < 100; i++){
-        sphereArray[i] = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter:2}, scene);
-        sphereArray[i].position = new BABYLON.Vector3(3*(Math.random()-0.5)*i, (Math.random()-0.5)*i, 3*(Math.random()-0.5)*i);
-        pointArray[i] = new BABYLON.Vector3(sphereArray[i].position.x, sphereArray[i].position.y, sphereArray[i].position.z);
+        pointArray[i] = new BABYLON.Vector3(Math.cos((Math.PI/4)*i), i, Math.sin((Math.PI/4)*i));
     }
     var sphereConnectingLines = BABYLON.MeshBuilder.CreateLines("sphereConnectingLines", {points: pointArray}, scene);
 
