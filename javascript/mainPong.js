@@ -60,8 +60,9 @@ var createScene = function () {
     var paddle1 = new paddle(paddle1, -20.2, 0, 0, 0);
     var paddle2 = new paddle(paddle2, 20.2, 0, 0, 0);
     var paddle3 = new paddle(paddle3, 0, 6.2, 0, 1);
-    var paddle4 = new paddle(paddle4, 0, 0, 8.2, 2);
-    var paddle5 = new paddle(paddle5, 0, 0, -8.2, 2);
+    var paddle4 = new paddle(paddle4, 0, -6.2, 0, 1);
+    var paddle5 = new paddle(paddle5, 0, 0, 8.2, 2);
+    var paddle6 = new paddle(paddle6, 0, 0, -8.2, 2);
 
     var ball = {
         radius : 0.5,
@@ -76,7 +77,7 @@ var createScene = function () {
             // this.vy = Math.sin(ticks*Math.PI/10)/2;
             // this.vz = Math.cos(ticks*Math.PI/10)/2;
 
-            if(this.babylon.position.y - this.radius <= ground.position.y){ //Collision with ground
+            if(this.babylon.position.y - this.radius <= -6){ //Collision with ground
                 this.vy *= -1;
             }
             if(this.babylon.position.y + this.radius >= 6){ //Collision with imaginary ceiling
@@ -89,10 +90,10 @@ var createScene = function () {
                 this.vz *= -1;
             }
 
-            if(this.babylon.position.x + this.radius >= 18.5){
+            if(this.babylon.position.x + this.radius >= 20){
                 this.vx *= -1;
             }
-            if(this.babylon.position.x - this.radius <= -18.5){
+            if(this.babylon.position.x - this.radius <= -20){
                 this.vx *= -1;
             }
         },
@@ -108,8 +109,8 @@ var createScene = function () {
         },
     }
 
-    var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 40, height: 16, subdivsions: 1, updatable: false}, scene);
-    ground.position = new BABYLON.Vector3(0, -6, 0);
+    //var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 40, height: 16, subdivsions: 1, updatable: false}, scene);
+    //ground.position = new BABYLON.Vector3(0, -6, 0);
 
     var gameLoop = setInterval(function(){
         ball.babylon.position = new BABYLON.Vector3(ball.babylon.position.x + ball.vx, ball.babylon.position.y + ball.vy, ball.babylon.position.z + ball.vz);
@@ -121,12 +122,13 @@ var createScene = function () {
         paddle3.loop();
         paddle4.loop();
         paddle5.loop();
+        paddle6.loop();
         ticks++;
     }, 20);
     var ballCopyLoop = setInterval(function(){
         //ball.ballClone();
         //ball.pointClone();
-        //ball.connectingLineUpdate();
+        ball.connectingLineUpdate();
     }, 100);
     return scene;
 };
