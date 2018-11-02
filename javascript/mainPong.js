@@ -8,8 +8,15 @@ var createScene = function () {
     var scene = new BABYLON.Scene(engine);
 
     // Add a camera to the scene and attach it to the canvas
-    var camera = new BABYLON.UniversalCamera("Camera", new BABYLON.Vector3(0, 0, -30), scene);
+    //var camera = new BABYLON.UniversalCamera("Camera", new BABYLON.Vector3(0, 0, -30), scene);
+    var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI/2, Math.PI/2, 50, new BABYLON.Vector3(0, 0, 0), scene);
     camera.attachControl(canvas, true);
+    function cameraPan(){
+        camera.alpha -= Math.PI/200;
+        camera.beta += Math.PI/200;
+        camera.radius = 38 + (20-8)*Math.pow(Math.cos(camera.alpha), 2);
+        //Originally (20+8)*sin^2 + (20+20)*cos^2 but realized am dumb. Change back if using variables intead of 38 and 12.
+    }
 
 
     // Add lights to the scene
@@ -76,25 +83,38 @@ var createScene = function () {
             // this.vx = Math.cos(ticks*Math.PI/10)/2;
             // this.vy = Math.sin(ticks*Math.PI/10)/2;
             // this.vz = Math.cos(ticks*Math.PI/10)/2;
+            // this.vx = 0;
+            // this.vy = 0;
+            // this.vz = 0;
 
-            if(this.babylon.position.y - this.radius <= -6){ //Collision with ground
+            if(this.babylon.position.y - this.radius <= -6 && this.vy < 0){ //Collision with ground
                 this.vy *= -1;
             }
-            if(this.babylon.position.y + this.radius >= 6){ //Collision with imaginary ceiling
+            if(this.babylon.position.y + this.radius >= 6 && this.vy > 0){ //Collision with imaginary ceiling
                 this.vy *= -1;
             }
-            if(this.babylon.position.z - this.radius <= -8){ //Collision with imaginary close wall
+            if(this.babylon.position.z - this.radius <= -8 && this.vz < 0){ //Collision with imaginary close wall
                 this.vz *= -1;
             }
-            if(this.babylon.position.z + this.radius >= 8){ //Collision with imaginary far wall
+            if(this.babylon.position.z + this.radius >= 8 && this.vz > 0){ //Collision with imaginary far wall
                 this.vz *= -1;
             }
 
             if(this.babylon.position.x + this.radius >= 20){
                 this.vx *= -1;
+                if(Math.random() < 1){
+                    this.vx = -Math.random();
+                    this.vy = Math.random();
+                    this.vz = Math.random();
+                }
             }
             if(this.babylon.position.x - this.radius <= -20){
                 this.vx *= -1;
+                if(Math.random() < 1){
+                    this.vx = Math.random();
+                    this.vy = Math.random();
+                    this.vz = Math.random();
+                }
             }
         },
         connectingLineUpdate : function(){
@@ -116,6 +136,7 @@ var createScene = function () {
         ball.babylon.position = new BABYLON.Vector3(ball.babylon.position.x + ball.vx, ball.babylon.position.y + ball.vy, ball.babylon.position.z + ball.vz);
         ball.collisionCheck();
         light3CameraFollow();
+        cameraPan();
 
         paddle1.loop();
         paddle2.loop();
