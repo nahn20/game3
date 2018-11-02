@@ -13,7 +13,7 @@ var createScene = function () {
     camera.attachControl(canvas, true);
     function cameraPan(){
         camera.alpha -= Math.PI/200;
-        camera.beta += Math.PI/200;
+        //camera.beta += Math.PI/300;
         camera.radius = 38 + (20-8)*Math.pow(Math.cos(camera.alpha), 2);
         //Originally (20+8)*sin^2 + (20+20)*cos^2 but realized am dumb. Change back if using variables intead of 38 and 12.
     }
@@ -74,7 +74,7 @@ var createScene = function () {
     var ball = {
         radius : 0.5,
         vx : Math.random(),
-        vy : Math.random(),
+        vy : 1.43,
         vz : Math.random(),
         babylon : BABYLON.MeshBuilder.CreateSphere("ball", {diameter:2*this.radius}, scene),
         babylonClone : [],
@@ -83,9 +83,6 @@ var createScene = function () {
             // this.vx = Math.cos(ticks*Math.PI/10)/2;
             // this.vy = Math.sin(ticks*Math.PI/10)/2;
             // this.vz = Math.cos(ticks*Math.PI/10)/2;
-            // this.vx = 0;
-            // this.vy = 0;
-            // this.vz = 0;
 
             if(this.babylon.position.y - this.radius <= -6 && this.vy < 0){ //Collision with ground
                 this.vy *= -1;
@@ -104,7 +101,7 @@ var createScene = function () {
                 this.vx *= -1;
                 if(Math.random() < 1){
                     this.vx = -Math.random();
-                    this.vy = Math.random();
+                    //this.vy = Math.random();
                     this.vz = Math.random();
                 }
             }
@@ -112,7 +109,7 @@ var createScene = function () {
                 this.vx *= -1;
                 if(Math.random() < 1){
                     this.vx = Math.random();
-                    this.vy = Math.random();
+                    //this.vy = Math.random();
                     this.vz = Math.random();
                 }
             }
